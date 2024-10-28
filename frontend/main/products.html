@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Vila do Artesão</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/slick.css"/>
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="images/header/LOG005.png">
+    
+    <script type="text/javascript" src="js/navBar.js"></script>
+    <script type="text/javascript" src="js/produtos.js"></script>
+</head>
+
+<body onload="definirNavbar(); produtospage();">
+    <!-- Loading de carregamento -->
+    <section class="preloader">
+        <div class="spinner">
+            <span class="sk-inner-circle"></span>
+        </div>
+    </section>
+
+    <main>
+        <!-- Nav bar-->
+        <div id="Navbar_JS"></div>
+                        
+        <!-- Header das Lojas -->
+        <header class="site-header section-padding d-flex justify-content-center align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 col-12">
+                        <h1><span class="d-block text-primary">Lojas</span></h1>
+                    </div>
+                </div>
+            </div>
+            <img src="images/header/lojas2.jpg" class="head-image-lojas" alt="">
+        </header>
+
+        <style>
+            .detalhes {
+                display: none; /* Esconde as seções por padrão */
+            }
+        </style>
+        
+        <script>
+            function toggleDetalhes(section) {
+                const secoes = document.querySelectorAll('.detalhes');
+                secoes.forEach((secao) => {
+                    if (secao.id.includes(section)) {
+                        secao.style.display = secao.style.display === 'none' || secao.style.display === '' ? 'block' : 'none';
+                    } else {
+                        secao.style.display = 'none'; // Esconde as outras seções se necessário
+                    }
+                });
+            }
+        </script>
+        
+        <!-- Navegação -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="mb-5">Produtos</h2>
+                </div>
+
+                <!-- Apresentação dos produtos -->
+                <div class="">
+                    <ul class="navbar-produtos">
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('madeira')">MADEIRA</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('ceramica')">CERÂMICA</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('vidros')">VIDROS</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('bonecas')">BONECAS</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('pinturas')">PINTURAS</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('gesso')">GESSO</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('brinquedos')">BRINQUEDOS</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-primary" onclick="fetchProdutos('reciclagem')">RECICLAGEM</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Container para exibir os produtos -->
+                <div id="produtos-container" class="mt-4"></div>
+
+                <script>
+                    // Função para buscar produtos com filtro de categoria
+                    function fetchProdutos(categoria) {
+                        // Define a URL com o parâmetro de categoria, se especificado
+                        const url = `http://localhost:8080/api/produtos${categoria ? `/categoria?categoria=${categoria}` : ''}`;
+
+                        const container = document.getElementById('produtos-container');
+                        container.innerHTML = '';
+
+                        fetch(url)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Erro ao buscar produtos.");
+                                }
+                                return response.json();
+                            })
+                            .then(produtos => {
+                                produtos.forEach(produto => {
+                                    const produtoDiv = document.createElement('div');
+                                    produtoDiv.classList.add('produto-item', 'mb-3', 'p-3', 'border', 'rounded');
+
+                                    produtoDiv.innerHTML = `
+                                        <div class="container-descricao">
+                                            <div class="descricao-img">
+                                                <img src="${produto.image}" alt="${produto.nome}" class="img-fluid">
+                                            </div>
+                                            <div class="descricao-texto">
+                                                <h4>${produto.nome}</h4>
+                                                <p>${produto.descricao}</p>
+                                                <p>${produto.contato}</p>
+                                            </div>
+                                        </div>
+                                    `;
+                                    container.appendChild(produtoDiv);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao buscar produtos:', error));
+                    }
+
+                    // Carregar todos os produtos ao iniciar a página
+                    fetchProdutos('');
+                </script>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé do site Vila do Artesão-->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <!-- Primeira seção do Rodapé do site Vila do Artesão-->
+                <div class="col-lg-3 col-10 me-auto mb-4">
+                    <h4 class="text-white mb-3"><a href="index.html">Vila do Artesão</a></h4>
+                    <p class="copyright-text text-muted mt-lg-5 mb-4 mb-lg-0">Copyright © 2024 <strong>Vila do Artesão</strong></p>
+                </div>
+                <!-- Segunda seção do Rodapé do site Vila do Artesão-->
+                <div class="col-lg-5 col-8">
+                    <h5 class="text-white mb-3">Localização</h5>
+                    <p class="text-muted">Av. Prof. Almeida Barreto, s/n - São José, Campina Grande - PB, 58400-328</p>
+                </div>
+                
+                <div class="col-lg-3 col-4">
+                    <!-- Terceira seção do Rodapé do site Vila do Artesão-->
+                    <h5 class="text-white mb-3">Social</h5>
+                    <ul class="social-icon">
+                        <!-- Redes sociais do Rodapé do site Vila do Artesão-->
+                        <li><a href="#" class="social-icon-link bi-facebook"></a></li>
+                        <li><a href="#" class="social-icon-link bi-whatsapp"></a></li>
+                        <li><a href="#" class="social-icon-link bi-instagram"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/Headroom.js"></script>
+    <script src="js/jQuery.headroom.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/custom.js"></script>
+
+</body>
+</html>
