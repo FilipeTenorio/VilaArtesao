@@ -2,41 +2,37 @@ const ArtesaoModel = require('../models/artesaoModel');
 
 module.exports = {
     // Recuperar todos os artesãos
-    getArtesaos: (req, res) => {
-        ArtesaoModel.find({})
-            .populate('produto', 'nome')  // Popula os produtos com seus nomes
-            .then((result) => {
-                res.status(200).json(result);
-            })
-            .catch(() => {
-                res.status(500).json({ message: "Não foi possível recuperar os artesãos." });
-            });
+    getArtesaos: async (req, res) => {
+        try {
+            const result = await ArtesaoModel.find({});
+            res.status(200).json(result);
+        } catch (err) {
+            res.status(500).json({ message: "Não foi possível recuperar os artesãos.", error: err.message });
+        }
     },
 
-    // Recuperar um artesão pelo ID (mostrar biografia e outros detalhes)
-    getArtesaoById: (req, res) => {
+    // Recuperar um artesão pelo ID
+    getArtesaoById: async (req, res) => {
         const { id } = req.params;
-        ArtesaoModel.findById(id)
-            .populate('produto', 'nome descricao')  // Popula os produtos com nome e descrição
-            .then((result) => {
-                if (result) {
-                    res.status(200).json(result);
-                } else {
-                    res.status(404).json({ message: "Artesão não encontrado." });
-                }
-            })
-            .catch(() => {
-                res.status(500).json({ message: "Não foi possível recuperar o artesão." });
-            });
+        try {
+            const result = await ArtesaoModel.findById(id);
+            if (result) {
+                res.status(200).json(result);
+            } else {
+                res.status(404).json({ message: "Artesão não encontrado." });
+            }
+        } catch (err) {
+            res.status(500).json({ message: "Não foi possível recuperar o artesão.", error: err.message });
+        }
     },
 
-    // Método para criar um novo artesão
+    // Criar um novo artesão
     createArtesao: async (req, res) => {
         const { categoria, nome, telefone, descricao, image, redesocial } = req.body;
 
-        // Validar se todos os campos necessários estão presentes
+        // Validar campos obrigatórios
         if (!categoria || !nome || !telefone || !redesocial) {
-            return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos!' });
+            return res.status(400).json({ error: 'Os campos categoria, nome, telefone e redesocial são obrigatórios!' });
         }
 
         try {
@@ -45,15 +41,53 @@ module.exports = {
                 nome,
                 telefone,
                 descricao,
-                image,
-                redesocial
+                image, // Se image não for fornecida, será null
+                redesocial,
             });
 
-            await novoArtesao.save(); // Salvar o artesão no banco de dados
-
-            res.status(201).json(novoArtesao); // Retornar o artesão criado
+            await novoArtesao.save();
+            res.status(201).json(novoArtesao);
         } catch (err) {
             res.status(500).json({ error: 'Erro ao criar o artesão: ' + err.message });
         }
-    }
+    },
+
+    // Atualizar um artesão
+    updateArtesao: async (req, res) => {
+        const { id } = req.params;
+        const { categoria, nome, telefone, descricao, image, redesocial } = req.body;
+
+        try {
+            const artesaoAtualizado = await ArtesaoModel.findByIdAndUpdate(
+                id,
+                { categoria, nome, telefone, descricao, image, redesocial },
+                { new: true } // Retorna o documento atualizado
+            );
+
+            if (!artesaoAtualizado) {
+                return res.status(404).json({ message: 'Artesão não encontrado.' });
+            }
+
+            res.status(200).json(artesaoAtualizado);
+        } catch (err) {
+            res.status(500).json({ error: 'Erro ao atualizar o artesão: ' + err.message });
+        }
+    },
+
+    // Excluir um artesão
+    deleteArtesao: async (req, res) => {
+        const { id } = req.params;
+
+        try {
+            const artesaoDeletado = await ArtesaoModel.findByIdAndDelete(id);
+
+            if (!artesaoDeletado) {
+                return res.status(404).json({ message: 'Artesão não encontrado.' });
+            }
+
+            res.status(200).json({ message: 'Artesão deletado com sucesso!' });
+        } catch (err) {
+            res.status(500).json({ error: 'Erro ao deletar o artesão: ' + err.message });
+        }
+    },
 };
