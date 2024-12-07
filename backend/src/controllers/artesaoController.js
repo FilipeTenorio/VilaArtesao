@@ -28,10 +28,10 @@ module.exports = {
 
     // Criar um novo artesão
     createArtesao: async (req, res) => {
-        const { categoria, nome, telefone, descricao, image, redesocial } = req.body;
+        const { categoria, nome, telefone, descricao, image, redesocial, loja } = req.body;
 
         // Validar campos obrigatórios
-        if (!categoria || !nome || !telefone || !redesocial) {
+        if (!categoria || !nome || !telefone || !redesocial || !loja) {
             return res.status(400).json({ error: 'Os campos categoria, nome, telefone e redesocial são obrigatórios!' });
         }
 
@@ -43,6 +43,7 @@ module.exports = {
                 descricao,
                 image, // Se image não for fornecida, será null
                 redesocial,
+                loja,
             });
 
             await novoArtesao.save();

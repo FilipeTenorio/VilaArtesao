@@ -64,10 +64,10 @@ module.exports = {
 
     // Método para criar um novo produto
     createProduto: async (req, res) => {
-        const { categoria, nome, id, descricao, image, contato, artesao } = req.body;
+        const { categoria, nome, descricao, image, contato, artesao } = req.body;
 
         // Validar se todos os campos necessários estão presentes
-        if (!categoria || !nome || !id || !descricao || !image || !contato || !artesao) {
+        if (!categoria || !nome || !descricao || !image ) {
             return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos!' });
         }
 
@@ -75,7 +75,6 @@ module.exports = {
             const novoProduto = new ProdutoModel({
                 categoria,
                 nome,
-                id,
                 descricao,
                 image,
                 contato,
