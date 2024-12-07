@@ -61,15 +61,23 @@ function fetchArtesaos() {
                 const artesaoDiv = document.createElement('div');
                 artesaoDiv.classList.add('artesao');
                 
-                artesaoDiv.innerHTML = `
-                    <div class="artesao-imagem">
+                artesaoDiv.innerHTML =
+                
+                 `
+                 <div class="wrapper">
+                    <div classe="container-artesoes">
+                    <div class="artesao-logo">
                         <img src="${artesao.image}" alt="${artesao.loja}" style="width: 200px;">
                     </div>
-                    <div class="artesao-texto">
+                    <div class="description-container">
                         <h3>${artesao.nome}</h3>
+                        <h4>Loja: ${artesao.loja}</h4>
                         <p>${artesao.descricao}</p>
                         <p>Contato: ${artesao.telefone}</p>
                     </div>
+                    </div>
+                    </div>
+                
                 `;
                 
                 container.appendChild(artesaoDiv);
@@ -116,5 +124,5 @@ function fetchArtesaos() {
         <script src="js/slick.min.js"></script>
         <script src="js/custom.js"></script>
 
-    </body>
+    </body>
 </html>

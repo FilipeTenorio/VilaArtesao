@@ -1281,12 +1281,13 @@ button:focus:not(:focus-visible) {
   margin-top: -100px;
 }
 
+
 /* NavBar dos Produtos */
 
 .navbar-produtos .nav-item  {
   list-style: none;
   padding: 0;
-  display: inline-block;
+  margin-top: 20px;
   margin-right: 54px;
   font-size: 20px;
   
@@ -1326,17 +1327,16 @@ button:focus:not(:focus-visible) {
 .container-img, .container-descricao {
   padding: 20px;
   
+  
 }
 
 .container-artesoes {
-  max-width: 400px; /* Largura máxima */
-  margin: 40px 0 40px 20px;/* Centralizando horizontalmente e definindo um espaçamento vertical */
-  padding: 20px;
-  border-radius: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  min-height: 300px; /* Altura mínima do container */
+  display: grid; /* Define o contêiner como uma grid */
+  grid-template-columns: repeat(3, 1fr); /* Três colunas de tamanhos iguais */
+  gap: 20px; /* Espaçamento entre os itens */
+  padding: 20px; /* Espaçamento interno no contêiner */
+  
+
 }
 
 /* Responsividade */
@@ -1354,18 +1354,39 @@ button:focus:not(:focus-visible) {
 /* Wrapper que contém todos os containers */
 .wrapper {
   display: flex;
-  justify-content: space-between; /* Distribui espaço entre os containers */
-  gap: 20px; /* Espaçamento entre os containers */
-  flex-wrap: wrap; /* Permite que os containers quebrem para a próxima linha em telas menores */
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr); /* Três colunas de tamanhos iguais */
+  margin-top: 2%; /* Define uma largura fixa para cada "artesão" */
+  margin-bottom: 2%;
+  border: 1px solid #ddd; /* Opcional: Adiciona uma borda */
+  border-radius: 5px; /* Opcional: Bordas arredondadas */
+  padding: 10px; /* Espaçamento interno */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Opcional: Sombra para destacar */
+  text-align: center; /* Centraliza o texto dentro do wrapper */
+  background-color: #f9f9f9; /* Cor de fundo */
 }
 
 .artesao-logo img {
   width: 200px;
   height: 200px;
-  margin-right: 69px;
+  
+  
 }
 
+.btn-btn-primary {
+  border: none;
+  background-color: transparent;
+  color: gray;
+  transition: color 0.5s ease;
+}
+.btn-btn-primary:hover{
+  color: black;
+}
 
-
-
+.artesao-img {
+  width: 200px;
+  height: 200px;
+  display: flex;
+}
 
